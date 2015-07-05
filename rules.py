@@ -325,6 +325,16 @@ def GenerateBuildInfoPyCode(env, target, source, path):
 def Basename(path):
     return path.rsplit('.', 1)[0]
 
+# ExtractPy Method
+def ExtractPyFunc(env, filelist):
+    PySrcs = []
+    for target in filelist:
+        fname = str(target)
+        ext = fname.rsplit('.', 1)[1]
+        if ext == 'py':
+            PySrcs.append(fname)
+    return PySrcs
+
 # ExtractCpp Method
 def ExtractCppFunc(env, filelist):
     CppSrcs = []
@@ -939,6 +949,7 @@ def SetupBuildEnvironment(conf):
     env.Append(BUILDERS = {'venv_add_build_pkg': venv_add_build_pkg })
     env.Append(BUILDERS = {'build_maven': build_maven })
 
+    env.AddMethod(ExtractPyFunc, "ExtractPy")
     env.AddMethod(ExtractCppFunc, "ExtractCpp")
     env.AddMethod(ExtractCFunc, "ExtractC")
     env.AddMethod(ExtractHeaderFunc, "ExtractHeader")
